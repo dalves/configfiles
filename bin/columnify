@@ -1,0 +1,73 @@
+#!/usr/bin/env python2.7
+# coding=utf8
+
+from collections import defaultdict
+import sys
+import os
+import re
+
+def get_terminal_size_nix():
+    """
+    Return a tuple of (width, height) of the terminal
+    http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
+    """
+    def ioctl_GWINSZ(fd):
+        try:
+            import fcntl, termios, struct, os
+            cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ,'1234'))
+        except:
+            return None
+        return cr
+    cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
+    if not cr:
+        try:
+            fd = os.open(os.ctermid(), os.O_RDONLY)
+            cr = ioctl_GWINSZ(fd)
+            os.close(fd)
+        except:
+            pass
+    if not cr:
+        try:
+            cr = (env['LINES'], env['COLUMNS'])
+        except:
+            return None
+    return int(cr[1]), int(cr[0])
+
+
+def pad(string, width, idx):
+    if idx == max_fields -1:
+        return string # don't pad last column
+    return string + ' ' * (width - len(string))
+
+
+if __name__ == '__main__':
+
+    console_width, console_height = get_terminal_size_nix()
+
+    # Non-printable characters (e.g. color codes) can screw up our width 
+    # calculations
+    extra_width = int(sys.argv[1]) if len(sys.argv) == 2 else 0
+
+    FIELD_SEPARATOR = "  "
+    MAX_WIDTH = console_width + extra_width
+
+    max_fields = 0
+    lines = []
+    field_widths = defaultdict(int)
+
+    for line in sys.stdin:
+        line = line.strip()
+        fields = line.split("|")
+        for idx, field in enumerate(fields):
+            field_widths[idx] = max(field_widths[idx], len(field) + len(FIELD_SEPARATOR))
+        max_fields = max(len(fields), max_fields)
+        lines.append(fields)
+
+
+    for line in lines:
+        out = ''.join(pad(string, field_widths[idx], idx) for idx, string in enumerate(line))
+        if len(out) > MAX_WIDTH:
+            out = out[:MAX_WIDTH] + "…"
+        print(out)
+
+

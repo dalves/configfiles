@@ -1,0 +1,79 @@
+# As of Git 1.7, you can now include this file from your actual gitconfig by doing this:
+#[include]
+#    path = /path/to/file
+
+
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+
+[alias]
+  br = branch
+  co = checkout
+  ci = commit
+  di = diff
+  st = status
+  rb = rebase
+  undo = reset --soft HEAD@{1}
+
+  # Shows the full graph of commits
+  graph = log --graph --oneline --all --decorate=short
+  ancestor = merge-base --octopus
+  parent = merge-base --octopus
+
+  f = fetch && git rebase origin/master master
+ 
+  # List all files touched by given revision
+  #lschanged = diff-tree --no-commit-id --name-only -r
+    lschanged = show --pretty="format:" --name-only
+  
+  # Show the commits and content in this branch
+  showbr = log --pretty=oneline master..
+  showallbr = log -U master..
+  
+  # Change the HEAD commit message to the template and edit
+  amd = !git commit --amend -eF `git config commit.template`
+
+  # Commit changes to current head as amended commit
+  plus = commit --amend -a -C HEAD
+  b = !git superbranch | columnify 60
+  superbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%1b[01m%1b[38;5;046m%(refname:short)%1b[00m|%1b[01m%1b[38;5;124m%(committerdate:relative)%1b[00m|%1b[01m%1b[38;5;111m%(authoremail)%1b[00m|%(subject)\""
+
+[svn]
+  followparent = true
+
+#[user]
+#  name = David Alves
+#  email = davidbalves@gmail.com
+
+# Show a log of '56 minutes ago' rather than 'November 12, 2008 12:34:53'
+[log]
+  #date = relative
+
+# Use only for black background terminal
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  plain = white
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  whitespace = red blink
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[merge]
+  # Use vimdiff3 if you want to show merged, local, base and remote instead of 
+  # merged, local, and remote
+  tool = vimdiff
+  #conflictstyle = diff3
+[core]
+  excludesfile = /Users/dalves/.gitignore_global
+  editor = /usr/bin/vim
+[mergetool "vimdiff3"]
+  cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"

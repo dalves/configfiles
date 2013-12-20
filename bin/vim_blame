@@ -1,0 +1,29 @@
+#!/usr/bin/env python2.7
+
+import re
+import subprocess
+import sys
+
+if len(sys.argv) != 2:
+    print("Must supply a filename")
+    exit()
+
+cmd = ['git', 'blame', '-e', sys.argv[1]]
+
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=0)
+
+def grep_dash_o(pattern, string):
+    match_obj = re.search(pattern, string)
+    if match_obj is not None:
+        return match_obj.group(1)
+    return ''
+
+
+for line in p.stdout:
+    line = line.strip()
+    author = grep_dash_o('<([^@]+)@', line)
+    date = grep_dash_o('(\\d\\d\\d\\d-\\d\\d-\\d\\d)', line)
+    githash = grep_dash_o('^([0-9a-f]{8,8})', line)
+
+    output = '  '.join([githash, date, author])
+    print(output)
