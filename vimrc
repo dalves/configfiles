@@ -85,7 +85,6 @@ autocmd FileType java nnoremap <silent> <buffer> <bs> <c-o>
 inoremap ( ()<esc>i
 inoremap [ []<esc>i
 inoremap { {}<esc>i
-inoremap ' ''<esc>i
 inoremap " ""<esc>i
 inoremap < <><esc>i
 
