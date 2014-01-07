@@ -64,11 +64,17 @@ export EDITOR=vim
 # Enable colors
 export CLICOLOR=1;
 
-# Set history size to 200000
+# Set history size to 200000 with no duplicates... store everything ever!
 export HISTCONTROL=erasedups
 export HISTSIZE=200000
 
+# Command prompt with git state. To use this, you need to source git-prompt.sh. 
+# On MacPorts, that file is located at /opt/local/share/git-core/git-prompt.sh
+
+# Basic prompt, no colors.
 #export PS1='\n[\u@\h] [\t] \W$(__git_ps1 " (%s)"): '
+
 # Nice color prompt for OSX 
 export PS1='\n\[\033[1;37m\]\u\[\033[0;30m\]@\[\033[0;32m\]\h\[\033[0;0m\] \[\033[0;37m\]\t \[\033[0;36m\]\W\[\033[0;0m\]\[\033[0;33m\]$(__git_ps1 " (%s)")\[\033[0;0m\]\[\033[1;37m\]:\[\033[0;0m\] '
+export GIT_PS1_SHOWDIRTYSTATE=1
 
