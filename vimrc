@@ -1,3 +1,5 @@
+" You can source this file from your main .vimrc by using this command:
+" :so ~/path/to/this/file
 set nocompatible
 set nonumber
 set expandtab
