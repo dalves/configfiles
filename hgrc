@@ -1,0 +1,16 @@
+[ui]
+merge = vimdiff
+
+[alias]
+# Prints relative paths to all files that were added or modified in the given
+# revision (defaults to '.').  Any missing paths will be printed to stderr
+# (e.g. if the file was deleted, or if it's in part of a sparse checkout that
+# you don't currently have checked out)
+changed=!ROOT="$($HG root)" ARG="$1" zsh -c '$HG log -r ${ARG:-.} -T "{file_mods % \"$ROOT/{file}\n\"}{file_adds % \"$ROOT/{file}\n\"}" | tr "\n" "\0" | xargs -0 -n1 realpath --relative-to="$(pwd)"'
+vc=!vim -p $($HG changed .)
+
+
+[merge-tools]
+vimdiff.executable = vimdiff
+vimdiff.args = -f -d $output -M $local $base $other -c "wincmd J" -c "set modifiable" -c "set write"
+vimdiff.premerge = keep
