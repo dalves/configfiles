@@ -82,15 +82,6 @@ set tabpagemax=9999
 " Make backspace in normal mode go backwards in the list of edit positions.
 autocmd FileType java nnoremap <silent> <buffer> <bs> <c-o>
 
-
-" Auto complete of (, ", ', [
-inoremap ( ()<esc>i
-inoremap [ []<esc>i
-inoremap { {}<esc>i
-inoremap " ""<esc>i
-inoremap < <><esc>i
-
-
 "-------------------- Python-specific things --------------------------------
 " Recognize buck files as Python
 autocmd BufWinEnter,BufRead,BufNew BUILD_DEFS set filetype=python
@@ -147,6 +138,9 @@ autocmd FileType xml setlocal foldmethod=syntax
 " Make folds be open initially.
 autocmd FileType c,cpp,vim,xml,html,xhtml,java,python normal zR
 
+nnoremap <CR> <C-]>
+nnoremap <BS> <C-T>
+
 "-------------------------- XML things ------------------------------------
 " Use two spaces for xml files
 autocmd FileType xml set ai sw=2
@@ -170,7 +164,6 @@ highlight PmenuSel ctermfg=black
 
 set completeopt=longest,menuone
 inoremap <expr> <cr>   pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
-
 
 nmap gb :set nowrap<CR>
  \:set scrollbind<CR>
@@ -229,12 +222,6 @@ highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
 highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black 
 highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black 
 highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black 
-
-" Rainbow parentheses!
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 
 
